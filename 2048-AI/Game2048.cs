@@ -63,8 +63,9 @@ public class Game2048
         return true;
     }
 
-    public void MoveLeft()
+    public bool MoveLeft()
     {
+        bool hasMoved = false;
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
@@ -77,11 +78,13 @@ public class Game2048
                         {
                             board[i, j] = board[i, k];
                             board[i, k] = 0;
+                            hasMoved = true;
                         }
                         else if (board[i, j] == board[i, k])
                         {
                             board[i, j] *= 2;
                             board[i, k] = 0;
+                            hasMoved = true;
                             break;
                         }
                         else
@@ -92,10 +95,12 @@ public class Game2048
                 }
             }
         }
+        return hasMoved;
     }
 
-    public void MoveRight()
+    public bool MoveRight()
     {
+        bool hasMoved = false;
         for (int i = 0; i < 4; i++)
         {
             for (int j = 3; j >= 0; j--)
@@ -108,11 +113,13 @@ public class Game2048
                         {
                             board[i, j] = board[i, k];
                             board[i, k] = 0;
+                            hasMoved = true;
                         }
                         else if (board[i, j] == board[i, k])
                         {
                             board[i, j] *= 2;
                             board[i, k] = 0;
+                            hasMoved = true;
                             break;
                         }
                         else
@@ -123,10 +130,12 @@ public class Game2048
                 }
             }
         }
+        return hasMoved;
     }
 
-    public void MoveUp()
+    public bool MoveUp()
     {
+        bool hasMoved = false;
         for (int j = 0; j < 4; j++)
         {
             for (int i = 0; i < 4; i++)
@@ -139,11 +148,13 @@ public class Game2048
                         {
                             board[i, j] = board[k, j];
                             board[k, j] = 0;
+                            hasMoved = true;
                         }
                         else if (board[i, j] == board[k, j])
                         {
                             board[i, j] *= 2;
                             board[k, j] = 0;
+                            hasMoved = true;
                             break;
                         }
                         else
@@ -154,10 +165,12 @@ public class Game2048
                 }
             }
         }
+        return hasMoved;
     }
 
-    public void MoveDown()
+    public bool MoveDown()
     {
+        bool hasMoved = false;
         for (int j = 0; j < 4; j++)
         {
             for (int i = 3; i >= 0; i--)
@@ -170,11 +183,13 @@ public class Game2048
                         {
                             board[i, j] = board[k, j];
                             board[k, j] = 0;
+                            hasMoved = true;
                         }
                         else if (board[i, j] == board[k, j])
                         {
                             board[i, j] *= 2;
                             board[k, j] = 0;
+                            hasMoved = true;
                             break;
                         }
                         else
@@ -185,25 +200,28 @@ public class Game2048
                 }
             }
         }
+        return hasMoved;
     }
 
-    public void Move(Direction direction)
+    public bool Move(Direction direction)
     {
+        bool hasMoved = false;
         switch (direction)
         {
             case Direction.Left:
-                MoveLeft();
+                hasMoved = MoveLeft();
                 break;
             case Direction.Right:
-                MoveRight();
+                hasMoved = MoveRight();
                 break;
             case Direction.Up:
-                MoveUp();
+                hasMoved = MoveUp();
                 break;
             case Direction.Down:
-                MoveDown();
+                hasMoved = MoveDown();
                 break;
         }
+        return hasMoved;
     }
 
     // 打印游戏界面
@@ -260,23 +278,26 @@ public class Game2048
             }
 
             ConsoleKeyInfo key = Console.ReadKey();
+            var direction = Direction.None;
             switch (key.Key)
             {
                 case ConsoleKey.LeftArrow:
-                    Move(Direction.Left);
+                    direction = Direction.Left;
                     break;
                 case ConsoleKey.RightArrow:
-                    Move(Direction.Right);
+                    direction = Direction.Right;
                     break;
                 case ConsoleKey.UpArrow:
-                    Move(Direction.Up);
+                    direction = Direction.Up;
                     break;
                 case ConsoleKey.DownArrow:
-                    Move(Direction.Down);
+                    direction = Direction.Down;
                     break;
             }
-
-            GenerateNumber();
+            if (Move(direction))
+            {
+                GenerateNumber();
+            }
         }
     }
 }
@@ -284,6 +305,7 @@ public class Game2048
 
 public enum Direction
 {
+    None,
     Up,
     Down,
     Left,
