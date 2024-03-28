@@ -1,6 +1,13 @@
 public class Game2048
 {
+    /// <summary>
+    /// 2048游戏的棋盘
+    /// </summary>
     private int[,] board;
+
+    /// <summary>
+    /// 用于生成随机数
+    /// </summary>
     private Random random;
 
     public Game2048()
@@ -11,6 +18,9 @@ public class Game2048
         GenerateNumber();
     }
 
+    /// <summary>
+    /// 在棋盘上生成一个新的数字
+    /// </summary>
     public void GenerateNumber()
     {
         while (true)
@@ -203,6 +213,11 @@ public class Game2048
         return hasMoved;
     }
 
+    /// <summary>
+    /// 移动
+    /// </summary>
+    /// <param name="direction">方向</param>
+    /// <returns></returns>
     public bool Move(Direction direction)
     {
         bool hasMoved = false;
@@ -264,7 +279,9 @@ public class Game2048
         Console.WriteLine("└──────┴──────┴──────┴──────┘");
     }
 
-    // 开始2048游戏
+    /// <summary>
+    /// 开始2048游戏
+    /// </summary>
     public void Start()
     {
         while (true)
@@ -302,7 +319,9 @@ public class Game2048
     }
 }
 
-
+/// <summary>
+/// 表示移动的方向
+/// </summary>
 public enum Direction
 {
     None,
