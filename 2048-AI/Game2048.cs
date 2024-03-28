@@ -1,3 +1,5 @@
+using _2048_AI;
+
 public class Game2048
 {
     /// <summary>
@@ -10,12 +12,25 @@ public class Game2048
     /// </summary>
     private Random random;
 
+    private IGame2048_AI _ai;
+
+    public int[,] Board
+    {
+        get { return board;}
+        set { board = value; }
+    }
+
     public Game2048()
     {
         board = new int[4, 4];
         random = new Random();
         GenerateNumber();
         GenerateNumber();
+    }
+
+    public void SetAI(IGame2048_AI ai)
+    {
+        _ai = ai;
     }
 
     /// <summary>
@@ -284,6 +299,7 @@ public class Game2048
     /// </summary>
     public void Start()
     {
+        int step = 1;
         while (true)
         {
             Console.Clear();
@@ -291,12 +307,13 @@ public class Game2048
             if (IsGameOver())
             {
                 Console.WriteLine("Game Over!");
+                Console.WriteLine($"共{step}步");
                 Console.ReadKey();
                 break;
             }
-            var direction = GetBestMove();
-            Console.WriteLine(GetArrow(direction));
-            ConsoleKeyInfo key = Console.ReadKey();
+            var direction = _ai.GetBestMove();
+            Console.WriteLine($"第{step}步：{GetArrow(direction)}");
+            //ConsoleKeyInfo key = Console.ReadKey();
             //var direction = Direction.None;
             //switch (key.Key)
             //{
@@ -316,6 +333,7 @@ public class Game2048
 
             if (Move(direction))
             {
+                step++;
                 GenerateNumber();
             }
         }
@@ -338,191 +356,6 @@ public class Game2048
 
         return string.Empty;
     }
-
-
-    #region AI
-    public Direction GetBestMove()
-    {
-        int maxScore = int.MinValue;
-        Direction bestMove = Direction.None;
-
-        foreach (Direction direction in Enum.GetValues(typeof(Direction)))
-        {
-            if (direction == Direction.None)
-                continue;
-
-            // 复制当前棋盘状态
-            int[,] tempBoard = (int[,])board.Clone();
-            bool hasMoved = Move(direction);
-
-            if (hasMoved)
-            {
-                // 使用DFS和剪枝算法找到最佳移动
-                int score = DFS(10, maxScore);
-
-                // 撤销移动
-                board = tempBoard;
-
-                if (score > maxScore)
-                {
-                    maxScore = score;
-                    bestMove = direction;
-                }
-            }
-        }
-
-        return bestMove;
-    }
-
-    private int DFS(int depth, int maxScore)
-    {
-        if (depth == 0)
-        {
-            return EvaluateBoard();
-        }
-
-        int maxEval = int.MinValue;
-
-        foreach (Direction direction in Enum.GetValues(typeof(Direction)))
-        {
-            if (direction == Direction.None)
-                continue;
-
-            // 复制当前棋盘状态
-            int[,] tempBoard = (int[,])board.Clone();
-            bool hasMoved = Move(direction);
-
-            if (hasMoved)
-            {
-                int score = DFS(depth - 1, maxEval);
-
-                // 撤销移动
-                board = tempBoard;
-
-                if (score > maxEval)
-                {
-                    maxEval = score;
-
-                    // 剪枝
-                    if (maxEval > maxScore)
-                    {
-                        break;
-                    }
-                }
-            }
-        }
-
-        return maxEval;
-    }
-
-    private int EvaluateBoard()
-    {
-        int score = 0;
-
-        // 最大值位置
-        if (board[0, 0] == board.Cast<int>().Max())
-        {
-            score += 1000;
-        }
-
-        // 单调性
-        for (int i = 0; i < 4; i++)
-        {
-            if (IsMonotonic(GetRow(board,i)) || IsMonotonic(GetColumn(board,i)))
-            {
-                score += 200;
-            }
-        }
-
-        // 空格数量
-        score += CountEmptyCells() * 500;
-
-        // 平滑度
-        score -= CalculateSmoothness() * 100;
-
-        return score;
-    }
-
-    private int CountEmptyCells()
-    {
-        int count = 0;
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 4; j++)
-            {
-                if (board[i, j] == 0)
-                {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
-
-    private int[] GetRow(int[,] board, int row)
-    {
-        return Enumerable.Range(0, board.GetLength(1))
-            .Select(x => board[row, x])
-            .ToArray();
-    }
-
-    private int[] GetColumn(int[,] board, int column)
-    {
-        return Enumerable.Range(0, board.GetLength(0))
-            .Select(x => board[x, column])
-            .ToArray();
-    }
-
-    private bool IsMonotonic(int[] array)
-    {
-        return IsNonDecreasing(array) || IsNonIncreasing(array);
-    }
-
-    private bool IsNonDecreasing(int[] array)
-    {
-        for (int i = 0; i < array.Length - 1; i++)
-        {
-            if (array[i] > array[i + 1])
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private bool IsNonIncreasing(int[] array)
-    {
-        for (int i = 0; i < array.Length - 1; i++)
-        {
-            if (array[i] < array[i + 1])
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-    
-    private int CalculateSmoothness()
-    {
-        int smoothness = 0;
-        for (int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 4; j++)
-            {
-                if (i < 3) // 计算与下方单元格的差值
-                {
-                    smoothness += Math.Abs(board[i, j] - board[i + 1, j]);
-                }
-                if (j < 3) // 计算与右侧单元格的差值
-                {
-                    smoothness += Math.Abs(board[i, j] - board[i, j + 1]);
-                }
-            }
-        }
-        return smoothness;
-    }
-
-    #endregion
 }
 
 /// <summary>
