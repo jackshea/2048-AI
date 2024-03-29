@@ -5,12 +5,12 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
 {
     private Game2048 _game2048;
     // 最大值位置的分数权重
-    private int[,] maxValWeight = new int[4, 4]
+    private int[,] weights = new int[4, 4]
     {
-        { 100, 80, 60, 40 },
-        { 80, 60, 40, 20 },
-        { 60, 40, 20, 10 },
-        { 40, 20, 10, 0 }
+        { 32, 16, 8, 4 },
+        { 16, 8, 4, 2 },
+        { 8, 4, 2, 1 },
+        { 4, 2, 1, 0 }
     };
 
     public Game2048_AI_DFS_G2(Game2048 game2048)
@@ -20,7 +20,7 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
 
     public Direction GetBestMove()
     {
-        EvaluateBoard(true);
+        //EvaluateBoard(true);
         int maxScore = int.MinValue;
         Direction bestMove = Direction.None;
 
@@ -35,8 +35,15 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
 
             if (hasMoved)
             {
+                _game2048.GenerateNumber2();
                 // 使用DFS和剪枝算法找到最佳移动
                 int score = DFS(10, maxScore);
+
+                //Console.Write($"D:{_game2048.GetArrow(direction)}, score：{score}, maxScore:{maxScore}\t");
+                //EvaluateBoard(true);
+
+                // 撤销移动
+                _game2048.Board = tempBoard;
 
                 if (score > maxScore)
                 {
@@ -44,9 +51,6 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
                     bestMove = direction;
                 }
             }
-
-            // 撤销移动
-            _game2048.Board = tempBoard;
         }
 
         return bestMove;
@@ -59,7 +63,7 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
             return EvaluateBoard();
         }
 
-        int maxEval = int.MinValue;
+        int maxEval = EvaluateBoard();
         foreach (Direction direction in Enum.GetValues(typeof(Direction)))
         {
             if (direction == Direction.None)
@@ -71,25 +75,12 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
 
             if (hasMoved)
             {
+                _game2048.GenerateNumber2();
                 var score = DFS(depth - 1, maxEval);
 
                 // 撤销移动
                 _game2048.Board = tempBoard;
 
-                if (score > maxEval)
-                {
-                    maxEval = score;
-
-                    // 剪枝
-                    if (maxEval > maxScore)
-                    {
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                var score = EvaluateBoard();
                 if (score > maxEval)
                 {
                     maxEval = score;
@@ -110,12 +101,12 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
     {
         int score = 0;
 
-        int maxVal = _game2048.Board.Cast<int>().Max();
+        int maxVal = _game2048.Board.Cast<int>().Max() * 2;
 
         score += maxVal;
 
         // 最大值位置
-        var maxPositionVal = EvaluateByMaxPosition() * 5;
+        var maxPositionVal = EvaluateByPosition();
         score += maxPositionVal;
 
         // 空格数量
@@ -128,13 +119,13 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
         {
             if (IsMonotonic(GetRow(_game2048.Board, i)) || IsMonotonic(GetColumn(_game2048.Board, i)))
             {
-                monotonicVal += 20;
+                monotonicVal += 1000;
             }
         }
         score += monotonicVal;
 
         //// 平滑度
-        var calculateSmoothness = CalculateSmoothness() / 10;
+        var calculateSmoothness = CalculateSmoothness() / 1;
         score -= calculateSmoothness;
         if (print)
         {
@@ -222,32 +213,18 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
         return smoothness;
     }
 
-    // 根据棋盘最大值的位置评估分数
-    private int EvaluateByMaxPosition()
+    // 根据棋盘位置评估分数
+    private int EvaluateByPosition()
     {
-        // 最大值位置
-        int maxVal = _game2048.Board.Cast<int>().Max();
-        int maxValRow = -1, maxValCol = -1;
-
-        // 找到最大值的位置
+        int score = 0;
         for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                if (_game2048.Board[i, j] == maxVal)
-                {
-                    maxValRow = i;
-                    maxValCol = j;
-                    break;
-                }
-            }
-            if (maxValRow != -1)
-            {
-                break;
+                score += weights[i, j] * _game2048.Board[i, j];
             }
         }
 
-
-        return maxValWeight[maxValRow, maxValCol];
+        return score;
     }
 }

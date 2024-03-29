@@ -51,6 +51,23 @@ public class Game2048
         }
     }
 
+    /// <summary>
+    /// 在棋盘上生成一个新的数字
+    /// </summary>
+    public void GenerateNumber2()
+    {
+        for (int i = 0; i < 16; i++)
+        {
+            int row = i / 4;
+            int col = i % 4;
+            if (board[row, col] == 0)
+            {
+                board[row, col] = 2;
+                break;
+            }
+        }
+    }
+
     // 是否游戏结束
     public bool IsGameOver()
     {
@@ -302,12 +319,12 @@ public class Game2048
         int step = 1;
         while (true)
         {
-            //Console.SetCursorPosition(0,0);
-            Print();
+            Console.SetCursorPosition(0,0);
+            PrintWithBorder();
             if (IsGameOver())
             {
-                //Console.Clear();
-                Print();
+                Console.Clear();
+                PrintWithBorder();
                 Console.WriteLine("Game Over!");
                 Console.WriteLine($"共{step}步");
                 Console.ReadKey();
@@ -336,7 +353,7 @@ public class Game2048
             if (Move(direction))
             {
                 step++;
-                GenerateNumber();
+                GenerateNumber2();
             }
         }
     }
