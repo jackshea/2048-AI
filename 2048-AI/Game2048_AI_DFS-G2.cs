@@ -59,7 +59,6 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
         }
 
         int maxEval = int.MinValue;
-
         foreach (Direction direction in Enum.GetValues(typeof(Direction)))
         {
             if (direction == Direction.None)
@@ -71,7 +70,7 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
 
             if (hasMoved)
             {
-                int score = DFS(depth - 1, maxEval);
+                var score = DFS(depth - 1, maxEval);
 
                 // 撤销移动
                 _game2048.Board = tempBoard;
@@ -87,31 +86,59 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
                     }
                 }
             }
+            //else
+            //{
+            //    var score = EvaluateBoard();
+            //    if (score > maxEval)
+            //    {
+            //        maxEval = score;
+
+            //        // 剪枝
+            //        if (maxEval > maxScore)
+            //        {
+            //            break;
+            //        }
+            //    }
+            //}
         }
 
         return maxEval;
     }
 
-    private int EvaluateBoard()
+    public int EvaluateBoard(bool print = false)
     {
         int score = 0;
-        score += EvaluateByMaxPosition();
+
+        int maxVal = _game2048.Board.Cast<int>().Max();
+
+        score += maxVal;
+
+        // 最大值位置
+        var maxPositionVal = EvaluateByMaxPosition();
+        score += maxPositionVal;
 
         // 空格数量
-        score += CountEmptyCells() * 500;
+        var emptyCellsVal = CountEmptyCells() * 100;
+        score += emptyCellsVal;
 
         // 单调性
+        var monotonicVal = 0;
         for (int i = 0; i < 4; i++)
         {
             if (IsMonotonic(GetRow(_game2048.Board, i)) || IsMonotonic(GetColumn(_game2048.Board, i)))
             {
-                score += 200;
+                monotonicVal += 20;
             }
         }
+        score += monotonicVal;
 
         //// 平滑度
-        score -= CalculateSmoothness() * 10;
-
+        var calculateSmoothness = CalculateSmoothness() / 10;
+        score -= calculateSmoothness;
+        if (print)
+        {
+            Console.WriteLine($"score: {score}, maxVal: {maxVal}, maxPositionVal: {maxPositionVal}, emptyCellsVal: {emptyCellsVal}, monotonicVal: {monotonicVal}, calculateSmoothness: {calculateSmoothness}");
+        }
         return score;
     }
 
@@ -220,6 +247,6 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
         }
 
 
-        return maxValWeight[maxValRow, maxValCol] * 10;
+        return maxValWeight[maxValRow, maxValCol];
     }
 }
