@@ -20,6 +20,7 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
 
     public Direction GetBestMove()
     {
+        EvaluateBoard(true);
         int maxScore = int.MinValue;
         Direction bestMove = Direction.None;
 
@@ -86,20 +87,20 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
                     }
                 }
             }
-            //else
-            //{
-            //    var score = EvaluateBoard();
-            //    if (score > maxEval)
-            //    {
-            //        maxEval = score;
+            else
+            {
+                var score = EvaluateBoard();
+                if (score > maxEval)
+                {
+                    maxEval = score;
 
-            //        // 剪枝
-            //        if (maxEval > maxScore)
-            //        {
-            //            break;
-            //        }
-            //    }
-            //}
+                    // 剪枝
+                    if (maxEval > maxScore)
+                    {
+                        break;
+                    }
+                }
+            }
         }
 
         return maxEval;
@@ -114,7 +115,7 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
         score += maxVal;
 
         // 最大值位置
-        var maxPositionVal = EvaluateByMaxPosition();
+        var maxPositionVal = EvaluateByMaxPosition() * 5;
         score += maxPositionVal;
 
         // 空格数量
