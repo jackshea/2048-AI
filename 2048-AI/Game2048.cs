@@ -302,10 +302,12 @@ public class Game2048
         int step = 1;
         while (true)
         {
-            Console.Clear();
-            PrintWithBorder();
+            Console.SetCursorPosition(0,0);
+            Print();
             if (IsGameOver())
             {
+                Console.Clear();
+                Print();
                 Console.WriteLine("Game Over!");
                 Console.WriteLine($"¹²{step}²½");
                 Console.ReadKey();
