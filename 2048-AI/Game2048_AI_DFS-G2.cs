@@ -3,12 +3,12 @@
 public class Game2048_AI_DFS_G2 : IGame2048_AI
 {
     private Game2048 _game2048;
-    private readonly Game2048_Evaluator _game2048Evaluator;
+    private readonly IEvaluate _game2048Evaluator;
 
     public Game2048_AI_DFS_G2(Game2048 game2048)
     {
         _game2048 = game2048;
-        _game2048Evaluator = new Game2048_Evaluator(_game2048);
+        _game2048Evaluator = new Game2048_Evaluator2(_game2048);
     }
 
     public Direction GetBestMove()
@@ -53,10 +53,10 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
     {
         if (depth == 0)
         {
-            return _game2048Evaluator.EvaluateBoard();
+            return _game2048Evaluator.Evaluate();
         }
 
-        double maxEval = _game2048Evaluator.EvaluateBoard();
+        double maxEval = _game2048Evaluator.Evaluate();
         foreach (Direction direction in Enum.GetValues(typeof(Direction)))
         {
             if (direction == Direction.None)

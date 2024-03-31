@@ -1,4 +1,4 @@
-public class Game2048_Evaluator
+public class Game2048_Evaluator: IEvaluate
 {
     private Game2048 _game2048;
     // 最大值位置的分数权重
@@ -15,13 +15,18 @@ public class Game2048_Evaluator
         _game2048 = game2048;
     }
 
-    public double EvaluateBoard()
+    public double Evaluate()
     {
+        if (_game2048.IsGameOver())
+        {
+            return -int.MaxValue;
+        }
         double score = 0;
 
         int maxVal = _game2048.Board.Cast<int>().Max() * 2;
-
         score += maxVal;
+
+        score += SumScore() * 10;
 
         // 最大值位置
         var maxPositionVal = EvaluateByPosition();
@@ -141,6 +146,19 @@ public class Game2048_Evaluator
             }
         }
 
+        return score;
+    }
+
+    private double SumScore()
+    {
+        double score = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                score += _game2048.Board[i, j] * _game2048.Board[i, j];
+            }
+        }
         return score;
     }
 }
