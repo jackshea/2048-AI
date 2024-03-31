@@ -1,5 +1,3 @@
-using _2048_AI;
-
 public class Game2048_AI_DFS: IGame2048_AI
 {
     private Game2048 _game2048;

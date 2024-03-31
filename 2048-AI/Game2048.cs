@@ -1,5 +1,3 @@
-using _2048_AI;
-
 public class Game2048
 {
     /// <summary>
