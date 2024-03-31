@@ -14,7 +14,7 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
     public Direction GetBestMove()
     {
         //EvaluateBoard(true);
-        int maxScore = int.MinValue;
+        double maxScore = int.MinValue;
         Direction bestMove = Direction.None;
 
         foreach (Direction direction in Enum.GetValues(typeof(Direction)))
@@ -30,7 +30,7 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
             {
                 _game2048.GenerateNumber2();
                 // 使用DFS和剪枝算法找到最佳移动
-                int score = DFS(10, maxScore);
+                double score = DFS(10, maxScore);
 
                 //Console.Write($"D:{_game2048.GetArrow(direction)}, score：{score}, maxScore:{maxScore}\t");
                 //EvaluateBoard(true);
@@ -49,14 +49,14 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
         return bestMove;
     }
 
-    private int DFS(int depth, int maxScore)
+    private double DFS(int depth, double maxScore)
     {
         if (depth == 0)
         {
             return _game2048Evaluator.EvaluateBoard();
         }
 
-        int maxEval = _game2048Evaluator.EvaluateBoard();
+        double maxEval = _game2048Evaluator.EvaluateBoard();
         foreach (Direction direction in Enum.GetValues(typeof(Direction)))
         {
             if (direction == Direction.None)

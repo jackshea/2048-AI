@@ -15,9 +15,9 @@ public class Game2048_Evaluator
         _game2048 = game2048;
     }
 
-    public int EvaluateBoard()
+    public double EvaluateBoard()
     {
-        int score = 0;
+        double score = 0;
 
         int maxVal = _game2048.Board.Cast<int>().Max() * 2;
 

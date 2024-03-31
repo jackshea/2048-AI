@@ -13,7 +13,7 @@ public class Game2048_AI_MiniMax : IGame2048_AI
 
     public Direction GetBestMove()
     {
-        int maxScore = int.MinValue;
+        double maxScore = int.MinValue;
         Direction bestMove = Direction.None;
 
         foreach (Direction direction in Enum.GetValues(typeof(Direction)))
@@ -28,7 +28,7 @@ public class Game2048_AI_MiniMax : IGame2048_AI
             if (hasMoved)
             {
                 // 使用极小化极大算法找到最佳移动
-                int score = MiniMax(12, true);
+                double score = MiniMax(12, true);
 
                 // 撤销移动
                 _game2048.Board = tempBoard;
@@ -45,7 +45,7 @@ public class Game2048_AI_MiniMax : IGame2048_AI
     }
 
     // 极小化极大算法
-    private int MiniMax(int depth, bool isMax)
+    private double MiniMax(int depth, bool isMax)
     {
         if (depth == 0)
         {
@@ -55,7 +55,7 @@ public class Game2048_AI_MiniMax : IGame2048_AI
         if (isMax)
         {
             // 移动
-            int maxEval = int.MinValue;
+            double maxEval = int.MinValue;
             foreach (Direction direction in Enum.GetValues(typeof(Direction)))
             {
                 if (direction == Direction.None)
@@ -67,7 +67,7 @@ public class Game2048_AI_MiniMax : IGame2048_AI
 
                 if (hasMoved)
                 {
-                    int eval = MiniMax(depth - 1, false);
+                    double eval = MiniMax(depth - 1, false);
 
                     // 撤销移动
                     _game2048.Board = tempBoard;
@@ -80,11 +80,11 @@ public class Game2048_AI_MiniMax : IGame2048_AI
         else
         {
             // 生成数据
-            int minEval = int.MaxValue;
+            double minEval = int.MaxValue;
             // 复制当前棋盘状态
             int[,] tempBoard = (int[,])_game2048.Board.Clone();
             _game2048.GenerateNumber2();
-            int eval = Math.Min(_game2048Evaluator.EvaluateBoard(), MiniMax(depth - 1, true));
+            double eval = Math.Min(_game2048Evaluator.EvaluateBoard(), MiniMax(depth - 1, true));
             // 还原
             _game2048.Board = tempBoard;
             minEval = Math.Min(minEval, eval);
