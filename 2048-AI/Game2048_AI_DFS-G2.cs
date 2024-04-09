@@ -8,7 +8,7 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
     public Game2048_AI_DFS_G2(Game2048 game2048)
     {
         _game2048 = game2048;
-        _game2048Evaluator = new Game2048_Evaluator2(_game2048);
+        _game2048Evaluator = new Game2048_Evaluator3(_game2048);
     }
 
     public Direction GetBestMove()

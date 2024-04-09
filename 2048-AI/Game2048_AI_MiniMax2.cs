@@ -3,12 +3,12 @@
 public class Game2048_AI_MiniMax2 : IGame2048_AI
 {
     private Game2048 _game2048;
-    private readonly Game2048_Evaluator _game2048Evaluator;
+    private readonly IEvaluate _game2048Evaluator;
 
     public Game2048_AI_MiniMax2(Game2048 game2048)
     {
         _game2048 = game2048;
-        _game2048Evaluator = new Game2048_Evaluator(_game2048);
+        _game2048Evaluator = new Game2048_Evaluator3(_game2048);
     }
 
     public Direction GetBestMove()

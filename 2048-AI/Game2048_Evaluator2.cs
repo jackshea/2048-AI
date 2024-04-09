@@ -1,5 +1,3 @@
-using static System.Formats.Asn1.AsnWriter;
-
 public class Game2048_Evaluator2 : IEvaluate
 {
     private Game2048 _game2048;
