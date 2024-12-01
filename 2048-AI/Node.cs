@@ -1,4 +1,4 @@
-﻿public class Node
+public class Node
 {
     public Node Parent { get; set; }
     public List<Node> Children { get; set; }

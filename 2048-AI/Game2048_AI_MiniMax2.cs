@@ -1,4 +1,4 @@
-﻿// 极小化极大算法(alpha-beta 剪枝)
+// 极小化极大算法(alpha-beta 剪枝)
 
 public class Game2048_AI_MiniMax2 : IGame2048_AI
 {

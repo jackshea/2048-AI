@@ -1,7 +1,7 @@
 public class Game2048_Evaluator: IEvaluate
 {
     private Game2048 _game2048;
-    // ×î´óÖµÎ»ÖÃµÄ·ÖÊıÈ¨ÖØ
+    // æœ€å¤§å€¼ä½ç½®çš„åˆ†æ•°æƒé‡
     private int[,] weights = new int[4, 4]
     {
         { 32, 16, 8, 4 },
@@ -28,15 +28,15 @@ public class Game2048_Evaluator: IEvaluate
 
         score += SumScore() * 10;
 
-        // ×î´óÖµÎ»ÖÃ
+        // æœ€å¤§å€¼ä½ç½®
         var maxPositionVal = EvaluateByPosition();
         score += maxPositionVal;
 
-        // ¿Õ¸ñÊıÁ¿
+        // ç©ºæ ¼æ•°é‡
         var emptyCellsVal = CountEmptyCells() * 100;
         score += emptyCellsVal;
 
-        // µ¥µ÷ĞÔ
+        // å•è°ƒæ€§
         var monotonicVal = 0;
         for (int i = 0; i < 4; i++)
         {
@@ -47,7 +47,7 @@ public class Game2048_Evaluator: IEvaluate
         }
         score += monotonicVal;
 
-        //// Æ½»¬¶È
+        //// å¹³æ»‘åº¦
         var calculateSmoothness = CalculateSmoothness() / 1;
         score -= calculateSmoothness;
 
@@ -122,11 +122,11 @@ public class Game2048_Evaluator: IEvaluate
         {
             for (int j = 0; j < 4; j++)
             {
-                if (i < 3) // ¼ÆËãÓëÏÂ·½µ¥Ôª¸ñµÄ²îÖµ
+                if (i < 3) // è®¡ç®—ä¸ä¸‹æ–¹å•å…ƒæ ¼çš„å·®å€¼
                 {
                     smoothness += Math.Abs(_game2048.Board[i, j] - _game2048.Board[i + 1, j]);
                 }
-                if (j < 3) // ¼ÆËãÓëÓÒ²àµ¥Ôª¸ñµÄ²îÖµ
+                if (j < 3) // è®¡ç®—ä¸å³ä¾§å•å…ƒæ ¼çš„å·®å€¼
                 {
                     smoothness += Math.Abs(_game2048.Board[i, j] - _game2048.Board[i, j + 1]);
                 }

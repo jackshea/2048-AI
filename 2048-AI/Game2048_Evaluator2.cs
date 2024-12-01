@@ -59,7 +59,7 @@ public class Game2048_Evaluator2 : IEvaluate
         return score;
     }
 
-    // ¿ÉºÏ²¢ÊıÁ¿
+    // å¯åˆå¹¶æ•°é‡
     private double MergeCount()
     {
         int count = 0;
@@ -127,7 +127,7 @@ public class Game2048_Evaluator2 : IEvaluate
         return count;
     }
 
-    // µ¥µ÷ĞÔ
+    // å•è°ƒæ€§
     private double MonotonicityScore()
     {
         double score = 0;

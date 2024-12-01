@@ -1,4 +1,4 @@
-// DFSµÚ¶þ´úËã·¨
+// DFSç¬¬äºŒä»£ç®—æ³•
 
 public class Game2048_AI_DFS_G2 : IGame2048_AI
 {
@@ -22,20 +22,20 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
             if (direction == Direction.None)
                 continue;
 
-            // ¸´ÖÆµ±Ç°ÆåÅÌ×´Ì¬
+            // å¤åˆ¶å½“å‰æ£‹ç›˜çŠ¶æ€
             int[,] tempBoard = (int[,])_game2048.Board.Clone();
             bool hasMoved = _game2048.Move(direction);
 
             if (hasMoved)
             {
                 _game2048.GenerateNumber2();
-                // Ê¹ÓÃDFSºÍ¼ôÖ¦Ëã·¨ÕÒµ½×î¼ÑÒÆ¶¯
+                // ä½¿ç”¨DFSå’Œå‰ªæžç®—æ³•æ‰¾åˆ°æœ€ä½³ç§»åŠ¨
                 double score = DFS(10, maxScore);
 
-                //Console.Write($"D:{_game2048.GetArrow(direction)}, score£º{score}, maxScore:{maxScore}\t");
+                //Console.Write($"D:{_game2048.GetArrow(direction)}, scoreï¼š{score}, maxScore:{maxScore}\t");
                 //EvaluateBoard(true);
 
-                // ³·ÏúÒÆ¶¯
+                // æ’¤é”€ç§»åŠ¨
                 _game2048.Board = tempBoard;
 
                 if (score > maxScore)
@@ -62,7 +62,7 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
             if (direction == Direction.None)
                 continue;
 
-            // ¸´ÖÆµ±Ç°ÆåÅÌ×´Ì¬
+            // å¤åˆ¶å½“å‰æ£‹ç›˜çŠ¶æ€
             int[,] tempBoard = (int[,])_game2048.Board.Clone();
             bool hasMoved = _game2048.Move(direction);
 
@@ -71,14 +71,14 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
                 _game2048.GenerateNumber2();
                 var score = DFS(depth - 1, maxEval);
 
-                // ³·ÏúÒÆ¶¯
+                // æ’¤é”€ç§»åŠ¨
                 _game2048.Board = tempBoard;
 
                 if (score > maxEval)
                 {
                     maxEval = score;
 
-                    // ¼ôÖ¦
+                    // å‰ªæž
                     if (maxEval > maxScore)
                     {
                         break;

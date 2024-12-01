@@ -1,5 +1,5 @@
 /// <summary>
-/// ÆÀ¹Àº¯Êý3
+/// è¯„ä¼°å‡½æ•°3
 /// </summary>
 /// <see cref="https://github.com/ovolve/2048-AI/blob/master/js/ai.js"/>
 public class Game2048_Evaluator3 : IEvaluate

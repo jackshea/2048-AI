@@ -1,12 +1,12 @@
 public class Game2048
 {
     /// <summary>
-    /// 2048ÓÎÏ·µÄÆåÅÌ
+    /// 2048æ¸¸æˆçš„æ£‹ç›˜
     /// </summary>
     private int[,] board;
 
     /// <summary>
-    /// ÓÃÓÚÉú³ÉËæ»úÊı
+    /// ç”¨äºç”Ÿæˆéšæœºæ•°
     /// </summary>
     private Random random;
 
@@ -32,7 +32,7 @@ public class Game2048
     }
 
     /// <summary>
-    /// ÔÚÆåÅÌÉÏÉú³ÉÒ»¸öĞÂµÄÊı×Ö
+    /// åœ¨æ£‹ç›˜ä¸Šç”Ÿæˆä¸€ä¸ªæ–°çš„æ•°å­—
     /// </summary>
     public void GenerateNumber()
     {
@@ -50,7 +50,7 @@ public class Game2048
     }
 
     /// <summary>
-    /// ÔÚÆåÅÌÉÏÉú³ÉÒ»¸öĞÂµÄÊı×Ö
+    /// åœ¨æ£‹ç›˜ä¸Šç”Ÿæˆä¸€ä¸ªæ–°çš„æ•°å­—
     /// </summary>
     public void GenerateNumber2()
     {
@@ -66,7 +66,7 @@ public class Game2048
         }
     }
 
-    // ÊÇ·ñÓÎÏ·½áÊø
+    // æ˜¯å¦æ¸¸æˆç»“æŸ
     public bool IsGameOver()
     {
         if (board.Cast<int>().Any(x => x == 0))
@@ -244,9 +244,9 @@ public class Game2048
     }
 
     /// <summary>
-    /// ÒÆ¶¯
+    /// ç§»åŠ¨
     /// </summary>
-    /// <param name="direction">·½Ïò</param>
+    /// <param name="direction">æ–¹å‘</param>
     /// <returns></returns>
     public bool Move(Direction direction)
     {
@@ -269,7 +269,7 @@ public class Game2048
         return hasMoved;
     }
 
-    // ´òÓ¡ÓÎÏ·½çÃæ
+    // æ‰“å°æ¸¸æˆç•Œé¢
     public void Print()
     {
         for (int i = 0; i < 4; i++)
@@ -281,13 +281,13 @@ public class Game2048
             Console.WriteLine();
         }
     }
-    // ´òÓ¡¼ÓÍøÂçµÄÓÎÏ·½çÃæ
+    // æ‰“å°åŠ ç½‘ç»œçš„æ¸¸æˆç•Œé¢
     public void PrintWithBorder()
     {
-        Console.WriteLine("©°©¤©¤©¤©¤©¤©¤©Ğ©¤©¤©¤©¤©¤©¤©Ğ©¤©¤©¤©¤©¤©¤©Ğ©¤©¤©¤©¤©¤©¤©´");
+        Console.WriteLine("â”Œâ”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”");
         for (int i = 0; i < 4; i++)
         {
-            Console.Write("©¦");
+            Console.Write("â”‚");
             for (int j = 0; j < 4; j++)
             {
                 if (board[i, j] == 0)
@@ -298,19 +298,19 @@ public class Game2048
                 {
                     Console.Write(board[i, j].ToString().PadLeft(6));
                 }
-                Console.Write("©¦");
+                Console.Write("â”‚");
             }
             Console.WriteLine();
             if (i != 3)
             {
-                Console.WriteLine("©À©¤©¤©¤©¤©¤©¤©à©¤©¤©¤©¤©¤©¤©à©¤©¤©¤©¤©¤©¤©à©¤©¤©¤©¤©¤©¤©È");
+                Console.WriteLine("â”œâ”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”¤");
             }
         }
-        Console.WriteLine("©¸©¤©¤©¤©¤©¤©¤©Ø©¤©¤©¤©¤©¤©¤©Ø©¤©¤©¤©¤©¤©¤©Ø©¤©¤©¤©¤©¤©¤©¼");
+        Console.WriteLine("â””â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”˜");
     }
 
     /// <summary>
-    /// ¿ªÊ¼2048ÓÎÏ·
+    /// å¼€å§‹2048æ¸¸æˆ
     /// </summary>
     public void Start()
     {
@@ -324,12 +324,12 @@ public class Game2048
                 Console.Clear();
                 PrintWithBorder();
                 Console.WriteLine("Game Over!");
-                Console.WriteLine($"¹²{step}²½");
+                Console.WriteLine($"å…±{step}æ­¥");
                 Console.ReadKey();
                 break;
             }
             var direction = _ai.GetBestMove();
-            Console.WriteLine($"µÚ{step}²½£º{GetArrow(direction)}");
+            Console.WriteLine($"ç¬¬{step}æ­¥ï¼š{GetArrow(direction)}");
             //ConsoleKeyInfo key = Console.ReadKey();
             //var direction = Direction.None;
             //switch (key.Key)
@@ -356,19 +356,19 @@ public class Game2048
         }
     }
 
-    // »ñÈ¡·½Ïò¼ıÍ·
+    // è·å–æ–¹å‘ç®­å¤´
     public string GetArrow(Direction direction)
     {
         switch (direction)
         {
             case Direction.Left:
-                return "¡û";
+                return "â†";
             case Direction.Right:
-                return "¡ú";
+                return "â†’";
             case Direction.Up:
-                return "¡ü";
+                return "â†‘";
             case Direction.Down:
-                return "¡ı";
+                return "â†“";
         }
 
         return string.Empty;
@@ -376,7 +376,7 @@ public class Game2048
 }
 
 /// <summary>
-/// ±íÊ¾ÒÆ¶¯µÄ·½Ïò
+/// è¡¨ç¤ºç§»åŠ¨çš„æ–¹å‘
 /// </summary>
 public enum Direction
 {

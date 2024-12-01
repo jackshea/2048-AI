@@ -1,4 +1,4 @@
-﻿// 蒙特卡洛树搜索算法
+// 蒙特卡洛树搜索算法
 public class Game2048_AI_Mcts : IGame2048_AI
 {
     private Game2048 game;

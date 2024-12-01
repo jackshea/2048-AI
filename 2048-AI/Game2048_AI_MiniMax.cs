@@ -1,4 +1,4 @@
-﻿// 极小化极大算法
+// 极小化极大算法
 
 public class Game2048_AI_MiniMax : IGame2048_AI
 {

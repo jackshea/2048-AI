@@ -1,4 +1,4 @@
-﻿public interface IEvaluate
+public interface IEvaluate
 {
     public double Evaluate();
 }

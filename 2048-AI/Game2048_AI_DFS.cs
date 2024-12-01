@@ -17,16 +17,16 @@ public class Game2048_AI_DFS: IGame2048_AI
             if (direction == Direction.None)
                 continue;
 
-            // ¸´ÖÆµ±Ç°ÆåÅÌ×´Ì¬
+            // å¤åˆ¶å½“å‰æ£‹ç›˜çŠ¶æ€
             int[,] tempBoard = (int[,])_game2048.Board.Clone();
             bool hasMoved = _game2048.Move(direction);
 
             if (hasMoved)
             {
-                // Ê¹ÓÃDFSºÍ¼ôÖ¦Ëã·¨ÕÒµ½×î¼ÑÒÆ¶¯
+                // ä½¿ç”¨DFSå’Œå‰ªæç®—æ³•æ‰¾åˆ°æœ€ä½³ç§»åŠ¨
                 int score = DFS(10, maxScore);
 
-                // ³·ÏúÒÆ¶¯
+                // æ’¤é”€ç§»åŠ¨
                 _game2048.Board = tempBoard;
 
                 if (score > maxScore)
@@ -54,7 +54,7 @@ public class Game2048_AI_DFS: IGame2048_AI
             if (direction == Direction.None)
                 continue;
 
-            // ¸´ÖÆµ±Ç°ÆåÅÌ×´Ì¬
+            // å¤åˆ¶å½“å‰æ£‹ç›˜çŠ¶æ€
             int[,] tempBoard = (int[,])_game2048.Board.Clone();
             bool hasMoved = _game2048.Move(direction);
 
@@ -62,14 +62,14 @@ public class Game2048_AI_DFS: IGame2048_AI
             {
                 int score = DFS(depth - 1, maxEval);
 
-                // ³·ÏúÒÆ¶¯
+                // æ’¤é”€ç§»åŠ¨
                 _game2048.Board = tempBoard;
 
                 if (score > maxEval)
                 {
                     maxEval = score;
 
-                    // ¼ôÖ¦
+                    // å‰ªæ
                     if (maxEval > maxScore)
                     {
                         break;
@@ -85,13 +85,13 @@ public class Game2048_AI_DFS: IGame2048_AI
     {
         int score = 0;
 
-        // ×î´óÖµÎ»ÖÃ
+        // æœ€å¤§å€¼ä½ç½®
         if (_game2048.Board[0, 0] == _game2048.Board.Cast<int>().Max())
         {
             score += 1000;
         }
 
-        // µ¥µ÷ĞÔ
+        // å•è°ƒæ€§
         for (int i = 0; i < 4; i++)
         {
             if (IsMonotonic(GetRow(_game2048.Board, i)) || IsMonotonic(GetColumn(_game2048.Board, i)))
@@ -100,10 +100,10 @@ public class Game2048_AI_DFS: IGame2048_AI
             }
         }
 
-        // ¿Õ¸ñÊıÁ¿
+        // ç©ºæ ¼æ•°é‡
         score += CountEmptyCells() * 500;
 
-        // Æ½»¬¶È
+        // å¹³æ»‘åº¦
         score -= CalculateSmoothness() * 100;
 
         return score;
@@ -175,11 +175,11 @@ public class Game2048_AI_DFS: IGame2048_AI
         {
             for (int j = 0; j < 4; j++)
             {
-                if (i < 3) // ¼ÆËãÓëÏÂ·½µ¥Ôª¸ñµÄ²îÖµ
+                if (i < 3) // è®¡ç®—ä¸ä¸‹æ–¹å•å…ƒæ ¼çš„å·®å€¼
                 {
                     smoothness += Math.Abs(_game2048.Board[i, j] - _game2048.Board[i + 1, j]);
                 }
-                if (j < 3) // ¼ÆËãÓëÓÒ²àµ¥Ôª¸ñµÄ²îÖµ
+                if (j < 3) // è®¡ç®—ä¸å³ä¾§å•å…ƒæ ¼çš„å·®å€¼
                 {
                     smoothness += Math.Abs(_game2048.Board[i, j] - _game2048.Board[i, j + 1]);
                 }
