@@ -29,8 +29,7 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
             if (hasMoved)
             {
                 _game2048.GenerateNumber2();
-                // 使用DFS和剪枝算法找到最佳移动
-                double score = DFS(10, maxScore);
+                double score = DFS(6);
 
                 //Console.Write($"D:{_game2048.GetArrow(direction)}, score：{score}, maxScore:{maxScore}\t");
                 //EvaluateBoard(true);
@@ -49,7 +48,7 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
         return bestMove;
     }
 
-    private double DFS(int depth, double maxScore)
+    private double DFS(int depth)
     {
         if (depth == 0)
         {
@@ -69,7 +68,7 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
             if (hasMoved)
             {
                 _game2048.GenerateNumber2();
-                var score = DFS(depth - 1, maxEval);
+                var score = DFS(depth - 1);
 
                 // 撤销移动
                 _game2048.Board = tempBoard;
@@ -77,12 +76,6 @@ public class Game2048_AI_DFS_G2 : IGame2048_AI
                 if (score > maxEval)
                 {
                     maxEval = score;
-
-                    // 剪枝
-                    if (maxEval > maxScore)
-                    {
-                        break;
-                    }
                 }
             }
         }
